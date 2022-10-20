@@ -1,5 +1,6 @@
 <?php
 require("include.php");
+error_reporting(0); #Set the error level to 0, which means no error messages are printed
 
 // Returns x location of any given timestamp
 function ts2x($ts)
@@ -201,12 +202,12 @@ if ($YMax <= 1.1)
 
 $im = imagecreate($width, $height);
 $white = imagecolorallocate($im, 255, 255, 255);
-$yellow = ImageColorAllocate($im, 255, 255, 0);
+$yellow = ImageColorAllocate($im, 255, 215, 0);
 $purple = ImageColorAllocate($im, 255, 0, 255);
 $green  = ImageColorAllocate($im, 0, 255, 0);
 $blue   = ImageColorAllocate($im, 0, 0, 255);
 $orange = ImageColorAllocate($im, 255, 128, 0);
-$lblue  = ImageColorAllocate($im, 128, 128, 255);
+$darkgreen  = ImageColorAllocate($im, 0, 100, 0);
 $brown  = ImageColorAllocate($im, 128, 0, 0);
 $red    = ImageColorAllocate($im, 255, 0, 0);
 $black  = ImageColorAllocate($im, 0, 0, 0);
@@ -248,8 +249,8 @@ for($Counter=XOFFSET+1; $Counter < $width; $Counter++)
         ImageLine($im, $Counter, ($height-YOFFSET) - $tcp[$Counter], $Counter, ($height-YOFFSET) - $udp[$Counter] - 1, $green);
         ImageLine($im, $Counter, ($height-YOFFSET) - $p2p[$Counter], $Counter, ($height-YOFFSET) - $udp[$Counter] - 1, $purple);
         ImageLine($im, $Counter, ($height-YOFFSET) - $http[$Counter], $Counter, ($height-YOFFSET) - $p2p[$Counter] - 1, $blue);
-        ImageLine($im, $Counter, ($height-YOFFSET) - $mail[$Counter], $Counter, ($height-YOFFSET) - $http[$Counter] - 1, $orange);
-        ImageLine($im, $Counter, ($height-YOFFSET) - $ftp[$Counter], $Counter, ($height-YOFFSET) - $mail[$Counter] - 1, $lblue);
+        ImageLine($im, $Counter, ($height-YOFFSET) - $mail[$Counter], $Counter, ($height-YOFFSET) - $http[$Counter] - 1, $darkgreen);
+        ImageLine($im, $Counter, ($height-YOFFSET) - $ftp[$Counter], $Counter, ($height-YOFFSET) - $mail[$Counter] - 1, $orange);
 		}
 //	else
 //		echo $Counter." not set<br>";
@@ -257,18 +258,18 @@ for($Counter=XOFFSET+1; $Counter < $width; $Counter++)
 
 // Margin Text
 if ($SentPeak < 1024/8)
-	$txtPeakSendRate = sprintf("Peak Rate: %.1f KBits/sec", $SentPeak*8);
+	$txtPeakSendRate = sprintf("Peak Rate: %.1f KB/s", $SentPeak*0.5);
 else if ($SentPeak < (1024*1024)/8)
-    $txtPeakSendRate = sprintf("Peak Rate: %.1f MBits/sec", ($SentPeak*8.0)/1024.0);
+    $txtPeakSendRate = sprintf("Peak Rate: %.1f MB/s", ($SentPeak*0.5)/1024.0);
 else 
-	$txtPeakSendRate = sprintf("Peak Rate: %.1f GBits/sec", ($SentPeak*8.0)/(1024.0*1024.0));
+	$txtPeakSendRate = sprintf("Peak Rate: %.1f GB/s", ($SentPeak*0.5)/(1024.0*1024.0));
                                                                                                                              
 if ($TotalSent < 1024)
-	$txtTotalSent = sprintf("Total %.1f KBytes", $TotalSent);
+	$txtTotalSent = sprintf("Total %.1f KB", $TotalSent);
 else if ($TotalSent < 1024*1024)
-	$txtTotalSent = sprintf("Total %.1f MBytes", $TotalSent/1024.0);
+	$txtTotalSent = sprintf("Total %.1f MB", $TotalSent/1024.0);
 else 
-	$txtTotalSent = sprintf("Total %.1f GBytes", $TotalSent/(1024.0*1024.0));
+	$txtTotalSent = sprintf("Total %.1f GB", $TotalSent/(1024.0*1024.0));
 
 $txtPacketsPerMtu = sprintf("%dk Pkts, Avg Size: %.1f bytes", $TotalPackets/1000, ($TotalSent*1024.0)/$TotalPackets);
                                                                                                                              
@@ -397,7 +398,7 @@ else if ((24*60*60*30*($width-XOFFSET))/$interval > 10)
 		$date = getdate($MarkTime);
 		if ($date['mon'] != 1)
 			{
-	        ImageLine($im, $x, $height-YOFFSET-5, $x, $height-YOFFSET+5, $black);                                                                                                                      
+	        ImageLine($im, $x, $height-YOFFSET-0, $x, $height-YOFFSET+10, $black);                                                                                                                      
     	    $txtDate = strftime("%b", $MarkTime);
         	ImageString($im, 2, $x-5,  $height-YOFFSET+10, $txtDate, $black);
           	}
@@ -421,7 +422,7 @@ if ($MarkTimeStep)
 		{
     	if ($x > XOFFSET) 
 			{
-    	    ImageLine($im, $x, $height-YOFFSET-5, $x, $height-YOFFSET+5, $black);
+    	    ImageLine($im, $x, $height-YOFFSET-0, $x, $height-YOFFSET+10, $black);
 	        }
 		$MarkTime += $MarkTimeStep;
 	    $x = ts2x($MarkTime);
@@ -458,24 +459,24 @@ if ($MarkTimeStep)
 // Draw Y Axis
 ImageLine($im, XOFFSET, 0, XOFFSET, $height, $black);
 
-$YLegend = 'k';
+$YLegend = 'K';
 $Divisor = 1;
 if ($YMax*8 > 1024*2)
 	{
     $Divisor = 1024;    // Display in m
-    $YLegend = 'm';
+    $YLegend = 'M';
     }
 
 if ($YMax*8 > 1024*1024*2)
 	{
     $Divisor = 1024*1024; // Display in g
-    $YLegend = 'g';
+    $YLegend = 'G';
 	}
 
 if ($YMax*8 > 1024*1024*1024*2)
 	{
     $Divisor = 1024*1024*1024; // Display in t
-    $YLegend = 't';
+    $YLegend = 'T';
     }
 
 if ($height/10 > 15)
@@ -492,7 +493,7 @@ while ($YTic <= ($YMax - $YMax/$YMarks))
 	{
     $y = ($height-YOFFSET)-(($YTic*($height-YOFFSET))/$YMax);
 	ImageLine($im, XOFFSET, $y, $width, $y, $black);
-    $txtYLegend = sprintf("%4.1f %sbits/s", (8.0*$YTic)/$Divisor, $YLegend);
+    $txtYLegend = sprintf("%4.1f %sB/s", (1.0*$YTic)/$Divisor, $YLegend);
     ImageString($im, 2, 3, $y-7, $txtYLegend, $black);
 	$YTic += $YStep;
 	}
