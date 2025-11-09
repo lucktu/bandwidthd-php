@@ -6,7 +6,7 @@ error_reporting(0); #Set the error level to 0, which means no error messages are
 function ts2x($ts)
 	{
 	global $timestamp, $width, $interval;
-	return(($ts-$timestamp)*(($width-XOFFSET) / $interval) + XOFFSET);
+	return(($ts-$timestamp)*(($width-XOFFSET)*0.95 / $interval) + XOFFSET);
 	}
 
 // If we have multiple IP's in a result set we need to total the average of each IP's samples
@@ -93,7 +93,7 @@ else
 if (isset($_GET['timestamp']) && is_numeric($_GET['timestamp']))
     $timestamp = $_GET['timestamp'];
 else
-	$timestamp = time() - $interval + (0.05*$interval);
+	$timestamp = time() - $interval;
 
 switch ($_GET['table']) {
     case 'bd_rx_total_log':
@@ -146,7 +146,7 @@ while ($row = pg_fetch_array($result))
 		$last_ip = $row['ip'];
 		}
 
-	$x = ($row['ts']-$timestamp)*(($width-XOFFSET)/$interval)+XOFFSET;
+	$x = ($row['ts']-$timestamp)*(($width-XOFFSET)*0.95/$interval)+XOFFSET;
 	$xint = (int) $x;
 
 	//echo "xint: ".$xint."<br>";

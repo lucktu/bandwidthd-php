@@ -61,10 +61,10 @@ if (!isset($interval))
   $interval = 1*24*60*60;
 
 if (!isset($timestamp))
-  $timestamp = time() - $interval + (0.05*$interval);
+  $timestamp = time() - $interval;
 
 if (!isset($limit))
-  $limit = 20;
+  $limit = 10;
 ?>
 <OPTION value="none">--Select A Sensor--</OPTION>
 </SELECT>
@@ -104,13 +104,13 @@ if (!isset($limit))
 
 <td>
 
-Subnet Filter:<input name=subnet value="<?=isset($subnet)?$subnet:"0.0.0.0/0"?>"> 
+Subnet Filter:<input name=subnet value="<?=isset($subnet)?$subnet:"192.0.0.0/0"?>"> 
 
 </td>
 
 <td>   
-<label><input type="checkbox" id="toggle-receive" checked>Recv</label>  
-<label><input type="checkbox" id="toggle-send" checked>Send</label>  
+<label><input type="checkbox" id="toggle-receive" checked>Recv</label>
+<label><input type="checkbox" id="toggle-send">Send</label>
 </td>  
 
 <td>
@@ -337,19 +337,24 @@ echo "</div>";
 <style>
 img[src*="graph.php"] {
     width: 100%;
+/*  height: auto; # Choose one of the two lines below */
     height: 300px;
     object-fit: fill;
 }
 </style>
 
 <script>      
-document.addEventListener('DOMContentLoaded', function() {      
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('.send-graph').forEach(function(graph) {
+        graph.style.display = 'none';
+    });
+
     // Listen for changes in the More checkbox 
     var moreCheckbox = document.querySelector('input[name="graphs"]');  
     if (moreCheckbox) {  
         moreCheckbox.addEventListener('change', function() {  
             var isChecked = this.checked;  
-              
+            
             // Update the status of all IP checkboxes 
             document.querySelectorAll('.ip-checkbox').forEach(function(checkbox) {  
                 checkbox.checked = isChecked;  
