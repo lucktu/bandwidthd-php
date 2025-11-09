@@ -66,6 +66,13 @@ where tx.ip = rx.ip;";
 $result = pg_query($sql);
 ?>
 
+<style>  
+img[src*="graph.php"] {  
+    width: 100%;  
+    height: auto;  
+}  
+</style>  
+
 <table width="100%" border=1 cellspacing=0>
 <tr>
 <th>Ip</th><th>Name</th>

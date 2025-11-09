@@ -127,7 +127,7 @@ $a_udp = array();
 $a_tcp = array();
 $a_ftp = array();
 $a_http = array();
-$a_http = array();
+$a_mail = array();
 $a_p2p = array();
 
 $sql = "select *, extract(epoch from timestamp) as ts from $table where ip <<= '$ip' and sensor_id = '$sensor_id' and timestamp > $timestamp::abstime and timestamp < ".($timestamp+$interval)."::abstime order by ip;";
@@ -194,7 +194,7 @@ if ($YMax <= 1.1)
 	$im = imagecreate($width, 20);
 	$white = imagecolorallocate($im, 255, 255, 255);
 	$black  = ImageColorAllocate($im, 0, 0, 0);
-	ImageString($im, 2, $width/2,  0, "No Data", $black);
+	ImageString($im, 2, $width,  0, "No Data", $black);
 	imagepng($im);
 	imagedestroy($im);
 	exit(0);
