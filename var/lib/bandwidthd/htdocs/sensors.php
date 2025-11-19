@@ -92,19 +92,19 @@ if (!isset($limit))
 
 <SELECT name="limit">
 <OPTION value="none">--How Many Results--</OPTION>
+<OPTION value=0 <?=$limit==0?"SELECTED":""?>>0</OPTION>
 <OPTION value=10 <?=$limit==10?"SELECTED":""?>>10</OPTION>
 <OPTION value=20 <?=$limit==20?"SELECTED":""?>>20</OPTION>
 <OPTION value=50 <?=$limit==50?"SELECTED":""?>>50</OPTION>
 <OPTION value=100 <?=$limit==100?"SELECTED":""?>>100</OPTION>
 <OPTION value=all <?=$limit=="all"?"SELECTED":""?>>All</OPTION>
-<OPTION value=0 <?=$limit==0?"SELECTED":""?>>0</OPTION>
 </select>
 
 </td>
 
 <td>
 
-Subnet Filter:<input name=subnet value="<?=isset($subnet)?$subnet:"192.0.0.0/0"?>"> 
+Subnet Filter:<input name=subnet value="<?=isset($subnet)?$subnet:"0.0.0.0/0"?>"> 
 
 </td>
 
@@ -289,7 +289,7 @@ else
     $total_table = "bd_rx_log";  
       
 echo "<div class='receive-graph'>";  
-echo "Recv:<br><img src=\"graph.php?ip=$sn&amp;interval=$interval&amp;sensor_id=".$sensor_id."&amp;table=$total_table\"><br>";  
+echo "Recv:<a style='float:right' href='#top'>[Return to Top]</a><br><img src=\"graph.php?ip=$sn&amp;interval=$interval&amp;sensor_id=".$sensor_id."&amp;table=$total_table\"><br>";
 echo '<img src="legend.gif"><br>' . "\n";  
 echo "</div>";  
   
@@ -323,7 +323,7 @@ echo "</div>";
         echo "</div>";
       
         echo "<div class='receive-graph'>";
-        echo "Recv:<br><img src=\"graph.php?ip=".$r['ip']."&amp;interval=$interval&amp;sensor_id=".$sensor_id."&amp;table=bd_rx_log&amp;yscale=".(max($r['txscale'], $r['rxscale']))."\"><br>";
+		echo "Recv:<a style='float:right' href='#top'>[Return to Top]</a><br><img src=\"graph.php?ip=".$r['ip']."&amp;interval=$interval&amp;sensor_id=".$sensor_id."&amp;table=bd_rx_log&amp;yscale=".(max($r['txscale'], $r['rxscale']))."\"><br>";
         echo '<img src="legend.gif"><br>' . "\n";
         echo "</div>";
       

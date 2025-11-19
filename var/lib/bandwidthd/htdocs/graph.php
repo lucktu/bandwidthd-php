@@ -131,7 +131,7 @@ $a_mail = array();
 $a_p2p = array();
 
 $sql = "select *, extract(epoch from timestamp) as ts from $table where ip <<= '$ip' and sensor_id = '$sensor_id' and timestamp > $timestamp::abstime and timestamp < ".($timestamp+$interval)."::abstime order by ip;";
-//echo $sql."<br>"; exit(1);
+// echo $sql."<br>"; exit(1);
 $result = pg_query($sql);
 
 // The SQL statement pulls the data out of the database ordered by IP address, that way we can average each
@@ -149,7 +149,7 @@ while ($row = pg_fetch_array($result))
 	$x = ($row['ts']-$timestamp)*(($width-XOFFSET)*0.95/$interval)+XOFFSET;
 	$xint = (int) $x;
 
-	//echo "xint: ".$xint."<br>";
+	// echo "xint: ".$xint."<br>";
 	$Count[$xint]++;
                                                                                                                              
 	if ($row['total']/$row['sample_duration'] > $SentPeak)
@@ -242,7 +242,7 @@ for($Counter=XOFFSET+1; $Counter < $width; $Counter++)
         $ftp[$Counter] += $mail[$Counter];
 
 		// Plot them!
-		//echo "$Counter:".$Counter." (h-y)-t:".($height-YOFFSET) - $total[$Counter]." h-YO-1:".$height-YOFFSET-1;
+		// echo "$Counter:".$Counter." (h-y)-t:".($height-YOFFSET) - $total[$Counter]." h-YO-1:".$height-YOFFSET-1;
         ImageLine($im, $Counter, ($height-YOFFSET) - $total[$Counter], $Counter, $height-YOFFSET-1, $yellow);
         ImageLine($im, $Counter, ($height-YOFFSET) - $icmp[$Counter], $Counter, $height-YOFFSET-1, $red);
         ImageLine($im, $Counter, ($height-YOFFSET) - $udp[$Counter], $Counter, ($height-YOFFSET) - $icmp[$Counter] - 1, $brown);
